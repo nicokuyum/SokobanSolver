@@ -1,4 +1,4 @@
-package ar.edu.itba.sia.tp1;
+package game;
 
 public class Output {
 	
