@@ -6,20 +6,32 @@ import java.util.Arrays;
 import gps.api.*;
 
 public class SokobanState implements GPSState{
-	char[][] board;
+	int[][] board;
 	Point playerPos;
 
 	
-	public SokobanState(char[][] board2, Point playerPos2) {
-		board = new char[board2.length][board2[0].length];
+	public SokobanState(int[][] board2, Point playerPos2) {
+		board = new int[board2.length][board2[0].length];
 		for(int i = 0; i<board2.length;i++){
 			for(int j = 0; j<board2.length;j++){
 				board[i][j] = board2[i][j];
 			}
 		}
 	}
+	public SokobanState(int[][] board2) {
+		board = new int[board2.length][board2[0].length];
+		for(int i = 0; i<board2.length;i++){
+			for(int j = 0; j<board2.length;j++){
+				board[i][j] = board2[i][j];
+				if((board[i][j] & 8) != 0 ){
+					playerPos = new Point(i,j);
+				}
+			}
+		}
+	}
+	
 	public SokobanState(int sizeX, int sizeY,Point playerPos) {
-		board = new char[sizeX][sizeY];
+		board = new int[sizeX][sizeY];
 		this.playerPos = playerPos;
 	}
 
@@ -45,7 +57,7 @@ public class SokobanState implements GPSState{
 		return true;
 	}
 	
-	public char[][] getBoard(){
+	public int[][] getBoard(){
 		return board;
 	}
 	

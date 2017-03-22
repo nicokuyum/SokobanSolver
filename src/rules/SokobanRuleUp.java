@@ -3,6 +3,7 @@ package rules;
 import java.util.Optional;
 
 import gps.SokobanState;
+import gps.TILE;
 import gps.api.GPSRule;
 import gps.api.GPSState;
 
@@ -22,23 +23,22 @@ public class SokobanRuleUp implements GPSRule {
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos());
-		if(s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] == 'x'){
+		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] & TILE.WALL.getValue()) != 0){
 			return Optional.empty();
 		}
-		if(s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] == 'b' 
-				&& (s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-2] == 'x' 
-				|| s.getBoard()[(int)s.getPlayerPos().getX() ][(int)s.getPlayerPos().getY()-2] == 'b')){
+		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] & TILE.BOX.getValue()) != 0 
+				&& ((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-2] & TILE.WALL.getValue()) != 0  
+				|| (s.getBoard()[(int)s.getPlayerPos().getX() ][(int)s.getPlayerPos().getY()-2] & TILE.BOX.getValue()) != 0)){
 			return Optional.empty();
 		}
-		if(s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] == 'b'){
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-2] = 'b';
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] = 'p';
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = 'o';
+		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] & TILE.BOX.getValue()) != 0){
+			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-2] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-2] | TILE.BOX.getValue();
+			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] = (next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] | TILE.PLAYER.getValue()) & TILE.BOX.getValue();
+			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
 		}else{
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] = 'p';
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = 'o';
+			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] | TILE.PLAYER.getValue();
+			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
 		}
 		return Optional.of(next);
 	}
-
 }
