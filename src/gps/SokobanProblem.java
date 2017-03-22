@@ -56,10 +56,7 @@ public class SokobanProblem implements GPSProblem {
 					if(((s.board[i+1][j] & TILE.WALL.getValue()) != 0 || (s.board[i-1][j] & TILE.WALL.getValue()) != 0) 
 							&& ((s.board[i][j+1] & TILE.WALL.getValue()) != 0 || (s.board[i][j-1] & TILE.WALL.getValue()) != 0)
 							&& ((s.board[i][j] & TILE.TARGET.getValue()) == 0)){
-						return Integer.MAX_VALUE;
-					}
-					if((s.board[i-1][j] & TILE.WALL.getValue()) != 0){
-						
+						return Integer.MAX_VALUE; //CASO DONDE UNA CAJA ESTA MUERTA POR ESTAR CONTRA PAREDES
 					}
 				}
 			}
