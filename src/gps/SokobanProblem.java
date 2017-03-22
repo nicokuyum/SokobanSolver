@@ -19,10 +19,12 @@ public class SokobanProblem implements GPSProblem {
 	public SokobanProblem(GPSState s, GPSState f){
 		st = s;
 		fin = f;
+		setRules();
 	}
 	public SokobanProblem(int[][] s, int[][] f){
 		st = new SokobanState(s);
 		fin = new SokobanState(f);
+		setRules();
 	}
 	private void setRules(){
 		rules.add(new SokobanRuleDown());
@@ -32,25 +34,36 @@ public class SokobanProblem implements GPSProblem {
 	}
 	@Override
 	public GPSState getInitState() {
-		// TODO Auto-generated method stub
-		return null;
+		return st;
 	}
 
 	@Override
 	public boolean isGoal(GPSState state) {
-		// TODO Auto-generated method stub
-		return false;
+		return state.equals(fin);
 	}
 
 	@Override
 	public List<GPSRule> getRules() {
-		// TODO Auto-generated method stub
-		return null;
+		return rules;
 	}
 
 	@Override
 	public Integer getHValue(GPSState state) {
-		// TODO Auto-generated method stub
+		SokobanState s = (SokobanState) state;
+		for(int i = 0; i<s.board.length;i++){
+			for(int j= 0; j<s.board[0].length;j++){
+				if((s.board[i][j] & TILE.BOX.getValue()) != 0){
+					if(((s.board[i+1][j] & TILE.WALL.getValue()) != 0 || (s.board[i-1][j] & TILE.WALL.getValue()) != 0) 
+							&& ((s.board[i][j+1] & TILE.WALL.getValue()) != 0 || (s.board[i][j-1] & TILE.WALL.getValue()) != 0)
+							&& ((s.board[i][j] & TILE.TARGET.getValue()) == 0)){
+						return Integer.MAX_VALUE;
+					}
+					if((s.board[i-1][j] & TILE.WALL.getValue()) != 0){
+						
+					}
+				}
+			}
+		}
 		return null;
 	}
 
