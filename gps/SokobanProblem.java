@@ -17,14 +17,14 @@ public class SokobanProblem implements GPSProblem {
 	List<GPSRule> rules = new ArrayList<>();
 	GPSState st;
 	GPSState fin;
-	public SokobanProblem(GPSState s, GPSState f){
+	
+	public SokobanProblem(GPSState s){
 		st = s;
-		fin = f;
 		setRules();
 	}
-	public SokobanProblem(int[][] s, int[][] f){
-		st = new SokobanState(s);
-		fin = new SokobanState(f);
+	
+	public SokobanProblem(SokobanState start){
+		st = start;
 		setRules();
 	}
 	private void setRules(){
@@ -40,7 +40,8 @@ public class SokobanProblem implements GPSProblem {
 
 	@Override
 	public boolean isGoal(GPSState state) {
-		return state.equals(fin);
+		SokobanState s = (SokobanState) state;
+		return s.hasWon();
 	}
 
 	@Override

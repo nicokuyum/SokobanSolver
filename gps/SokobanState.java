@@ -1,44 +1,47 @@
 package gps;
 
+import gps.api.GPSState;
+
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import gps.api.GPSState;
-
 public class SokobanState implements GPSState{
+	
 	int[][] board;
 	Point playerPos;
 	List<Point> boxes;
+	int completedBoxes;
+	int height;
+	int width;
 	
-	public SokobanState(int[][] board2, Point playerPos2,List<Point> boxes) {
-		board = new int[board2.length][board2[0].length];
-		for(int i = 0; i<board2.length;i++){
-			for(int j = 0; j<board2.length;j++){
-				board[i][j] = board2[i][j];
-			}
-		}
-		playerPos = playerPos2;
-		this.boxes = boxes;
-	}
-	public SokobanState(int[][] board2) {
-		board = new int[board2.length][board2[0].length];
-		for(int i = 0; i<board2.length;i++){
-			for(int j = 0; j<board2.length;j++){
-				board[i][j] = board2[i][j];
-				if((board[i][j] & TILE.PLAYER.getValue()) != 0 ){
-					playerPos = new Point(i,j);
-				}
-				if((board[i][j] & TILE.BOX.getValue()) != 0 ){
-					playerPos = new Point(i,j);
-				}
-			}
-		}
-	}
-	
-	public SokobanState(int sizeX, int sizeY,Point playerPos) {
-		board = new int[sizeX][sizeY];
+	public SokobanState(int[][] board, Point playerPos,List<Point> boxes, int width, int height, int completedBoxes) {
+		this.board = board;
+		this.height = height;
+		this.width = width;
+		this.completedBoxes = completedBoxes;
 		this.playerPos = playerPos;
+		if(height <=0 || width <= 0)
+			throw new IllegalArgumentException("Illegal map size parameters");
+	}
+	public SokobanState(SokobanState original) {
+		this(copyBoard(original.board),new Point(original.playerPos), copyBoxes(original.boxes), original.width,original.height,original.completedBoxes);
+	}
+	
+	public boolean hasWon(){
+		return completedBoxes == boxes.size();
+	}
+	
+	public void movePlayer(MOVE m){
+		playerPos.setLocation((playerPos.getX() + m.getX()), playerPos.getY() + m.getY());
+	}
+	public void moveBox(MOVE m){
+		for(Point b : boxes){
+			if(b.x == playerPos.x + m.getX() && b.y == playerPos.y + m.getY()){
+				b.setLocation(b.getX() + 2*m.getX(),b.getY() + 2*m.getY());
+			}
+		}
 	}
 
 	@Override
@@ -63,6 +66,24 @@ public class SokobanState implements GPSState{
 		return true;
 	}
 	
+	public static int[][] copyBoard(int[][] original){
+		int[][] copy = new int[original.length][original[0].length];
+		for(int i = 0; i<original.length;i++){
+			for(int j = 0; j<original[0].length;j++){
+				copy[i][j] = original[i][j];
+			}
+		}
+		return copy;
+	}
+	
+	public static List<Point> copyBoxes(List<Point> original){
+		List<Point> copy = new ArrayList<Point>(original.size());
+		for(Point p: original){
+			copy.add(new Point(p.x,p.y));
+		}
+		return copy;
+	}
+	
 	public int[][] getBoard(){
 		return board;
 	}
@@ -73,5 +94,15 @@ public class SokobanState implements GPSState{
 	
 	public List<Point> getBoxes(){
 		return boxes;
+	}
+	
+	public int getCompletedBoxes() {
+		return completedBoxes;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public int getWidth() {
+		return width;
 	}
 }

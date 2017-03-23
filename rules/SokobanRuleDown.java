@@ -23,7 +23,7 @@ public class SokobanRuleDown extends Moveable implements GPSRule{
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos(),s.getBoxes());
+		SokobanState next = new SokobanState(s);
 		if(!canMove(MOVE.DOWN,s)){
 			return Optional.empty();
 		}

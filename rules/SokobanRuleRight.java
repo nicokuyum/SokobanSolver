@@ -22,7 +22,7 @@ public class SokobanRuleRight implements GPSRule{
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos(),s.getBoxes());
+		SokobanState next = new SokobanState(s);
 		if((s.getBoard()[(int)s.getPlayerPos().getX() + 1][(int)s.getPlayerPos().getY()] & TILE.WALL.getValue()) != 0){
 			return Optional.empty();
 		}

@@ -22,7 +22,7 @@ public class SokobanRuleUp extends Moveable implements GPSRule {
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos(),s.getBoxes());
+		SokobanState next = new SokobanState(s);
 		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()-1] & TILE.WALL.getValue()) != 0){
 			return Optional.empty();
 		}

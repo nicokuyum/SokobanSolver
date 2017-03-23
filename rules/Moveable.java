@@ -24,7 +24,7 @@ public abstract class Moveable {
 	}
 	
 	public GPSState movePlayer(MOVE m, SokobanState s){
-		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos(),s.getBoxes());
+		SokobanState next = new SokobanState(s);
 		next.getBoard()[(int)s.getPlayerPos().getX()+m.getX()][(int)s.getPlayerPos().getY()+m.getY()] = next.getBoard()[(int)s.getPlayerPos().getX() + m.getY()][(int)s.getPlayerPos().getY() + m.getY()] | TILE.PLAYER.getValue();
 		next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
 		next.movePlayer(m);
@@ -32,7 +32,7 @@ public abstract class Moveable {
 	}
 	
 	public GPSState movePlayerWithBox(MOVE m, SokobanState s){
-		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos(),s.getBoxes());
+		SokobanState next = new SokobanState(s);
 		next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+2] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+2] | TILE.BOX.getValue();
 		next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] = (next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] | TILE.PLAYER.getValue()) & TILE.BOX.getValue();
 		next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();

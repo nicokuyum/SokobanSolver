@@ -1,39 +1,64 @@
 package IO;
+import gps.SokobanState;
+import gps.TILE;
+
+import java.awt.Point;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GameReader {
 	
 	private static Scanner in;
 
-	public static int[][] open(String file) throws FileNotFoundException{
+	public static SokobanState open(String file) throws FileNotFoundException{
 
 			in = new Scanner(new java.io.FileReader(file));
 			
-			int total = Integer.parseInt(in.nextLine());
-			int[][] matrix = new int[total][total];
+			int rows = in.nextInt();
+			int cols = in.nextInt();
 			
-			for(int i = 0 ; i < total ; i++){		
-				String line = in.next();
-				char[] ar = line.toCharArray();
-				for(int j = 0 ; j < total ; j++){
-					matrix[i][j] = ar[j] - 48; //48 es el desfasaje en ASCII por haber convertido al string en charArray!
+			int completedBoxes = 0;
+			
+			List<Point> boxes = new ArrayList<Point>();
+			
+			Point playerPos = null;
+			
+			int[][] matrix = new int[rows][cols];
+			
+			for(int i = 0 ; i < rows ; i++){		
+				for(int j = 0 ; j < cols ; j++){
+					int read = in.nextInt();
+					matrix[i][j] = read;
+					if((read & TILE.BOX.getValue()) != 0){
+						boxes.add(new Point(i,j));
+						if((read & TILE.TARGET.getValue()) != 0)
+							completedBoxes++;
+					}else if((read & TILE.PLAYER.getValue())!=0){
+						if(playerPos != null){
+							throw new IllegalArgumentException("There can't be more than 1 player");
+						}
+						playerPos = new Point(i,j);
+					}
 				}
 			}
+			SokobanState s = new SokobanState(matrix, playerPos, boxes, cols, rows, completedBoxes);
 			
-			printMatrix(matrix);
-			return matrix;
+			printState(s);
+			return s;
 			
 	}
 	
-	private static void printMatrix(int[][] matrix){
-		int l = matrix.length;
-		for(int i = 0 ; i < l ; i++){
-			for(int j = 0 ; j < l ; j++){
-				System.out.print(matrix[i][j]+" ");
+	private static void printState(SokobanState s){
+		for(int i = 0 ; i < s.getHeight() ; i++){
+			for(int j = 0 ; j < s.getWidth() ; j++){
+				System.out.print(s.getBoard()[i][j]+" ");
 			}
 			System.out.println("");
 		}
+		System.out.println("Height: " + s.getHeight());
+		System.out.println("Width: " + s.getWidth());
 	}
 	
 
