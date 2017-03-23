@@ -2,12 +2,13 @@ package rules;
 
 import java.util.Optional;
 
+import gps.MOVE;
 import gps.SokobanState;
 import gps.TILE;
 import gps.api.GPSRule;
 import gps.api.GPSState;
 
-public class SokobanRuleDown implements GPSRule{
+public class SokobanRuleDown extends Moveable implements GPSRule{
 
 	@Override
 	public Integer getCost() {
@@ -22,13 +23,8 @@ public class SokobanRuleDown implements GPSRule{
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos());
-		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] & TILE.WALL.getValue()) != 0){
-			return Optional.empty();
-		}
-		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] & TILE.BOX.getValue()) != 0 
-				&& ((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+2] & TILE.WALL.getValue()) != 0  
-				|| (s.getBoard()[(int)s.getPlayerPos().getX() ][(int)s.getPlayerPos().getY()+2] & TILE.BOX.getValue()) != 0)){
+		SokobanState next = new SokobanState(s.getBoard(),s.getPlayerPos(),s.getBoxes());
+		if(!canMove(MOVE.DOWN,s)){
 			return Optional.empty();
 		}
 		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] & TILE.BOX.getValue()) != 0){

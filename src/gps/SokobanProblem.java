@@ -1,5 +1,6 @@
 package gps;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,15 +51,9 @@ public class SokobanProblem implements GPSProblem {
 	@Override
 	public Integer getHValue(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		for(int i = 0; i<s.board.length;i++){
-			for(int j= 0; j<s.board[0].length;j++){
-				if((s.board[i][j] & TILE.BOX.getValue()) != 0){
-					if(((s.board[i+1][j] & TILE.WALL.getValue()) != 0 || (s.board[i-1][j] & TILE.WALL.getValue()) != 0) 
-							&& ((s.board[i][j+1] & TILE.WALL.getValue()) != 0 || (s.board[i][j-1] & TILE.WALL.getValue()) != 0)
-							&& ((s.board[i][j] & TILE.TARGET.getValue()) == 0)){
-						return Integer.MAX_VALUE; //CASO DONDE UNA CAJA ESTA MUERTA POR ESTAR CONTRA PAREDES
-					}
-				}
+		for(Point p : s.boxes){
+			if((s.board[p.x][p.y] & TILE.DEADLOCK.getValue()) != 0){
+				return Integer.MAX_VALUE; //CASO DONDE UNA CAJA ESTA MUERTA POR ESTAR CONTRA PAREDES
 			}
 		}
 		return null;

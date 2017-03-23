@@ -5,7 +5,8 @@ public enum TILE {
 	WALL(1),
 	BOX(2),
 	TARGET(4),
-	PLAYER(8);
+	PLAYER(8),
+	DEADLOCK(16);
 	
     private final int value;
     
