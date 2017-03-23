@@ -1,7 +1,5 @@
 package rules;
 
-import java.util.Optional;
-
 import gps.MOVE;
 import gps.SokobanState;
 import gps.TILE;
@@ -18,5 +16,17 @@ public abstract class Moveable {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean nextToBox(MOVE m,SokobanState s){
+		
+	}
+	
+	public GPSState movePlayer(MOVE m, SokobanState s){
+		
+	}
+	
+	public GPSState movePlayerWithBox(MOVE m, SokobanState s){
+		
 	}
 }
