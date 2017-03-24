@@ -1,12 +1,6 @@
 package gps;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
@@ -26,8 +20,8 @@ public class GPSEngine {
 	protected SearchStrategy strategy;
 
 	public GPSEngine(GPSProblem myProblem, SearchStrategy myStrategy) {
-		// TODO: open = *Su queue favorito, TENIENDO EN CUENTA EL ORDEN DE LOS NODOS*
-		bestCosts = new HashMap<GPSState, Integer>();
+		open = new LinkedList<>();
+		bestCosts = new HashMap<>();
 		problem = myProblem;
 		strategy = myStrategy;
 		explosionCounter = 0;
@@ -62,7 +56,7 @@ public class GPSEngine {
 			}
 			newCandidates = new ArrayList<>();
 			addCandidates(node, newCandidates);
-			// TODO: ¿Cómo se agregan los nodos a open en BFS?
+			open.addAll(newCandidates);
 			break;
 		case DFS:
 			if (bestCosts.containsKey(node.getState())) {
