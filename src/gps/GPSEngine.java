@@ -50,7 +50,7 @@ public class GPSEngine {
 	private void explode(GPSNode node) {
 		Collection<GPSNode> newCandidates;
 		switch (strategy) {
-		case BFS:
+		case BFS: //Esta deberia estar
 			if (bestCosts.containsKey(node.getState())) {
 				return;
 			}
@@ -58,13 +58,13 @@ public class GPSEngine {
 			addCandidates(node, newCandidates);
 			open.addAll(newCandidates);
 			break;
-		case DFS:
+		case DFS: //Esta deberia estar
 			if (bestCosts.containsKey(node.getState())) {
 				return;
 			}
 			newCandidates = new ArrayList<>();
 			addCandidates(node, newCandidates);
-			// TODO: ¿Cómo se agregan los nodos a open en DFS?
+            ((LinkedList<GPSNode>)open).addAll(0,newCandidates);
 			break;
 		case IDDFS:
 			if (bestCosts.containsKey(node.getState())) {
@@ -77,15 +77,15 @@ public class GPSEngine {
 		case GREEDY:
 			newCandidates = new PriorityQueue<>(/* TODO: Comparator! */);
 			addCandidates(node, newCandidates);
-			// TODO: ¿Cómo se agregan los nodos a open en GREEDY?
+            open.addAll(newCandidates);
 			break;
-		case ASTAR:
+		case ASTAR: //Esta creo que es asi
 			if (!isBest(node.getState(), node.getCost())) {
 				return;
 			}
 			newCandidates = new ArrayList<>();
 			addCandidates(node, newCandidates);
-			// TODO: ¿Cómo se agregan los nodos a open en A*?
+            ((LinkedList<GPSNode>)open).addAll(0,newCandidates);
 			break;
 		}
 	}
