@@ -20,6 +20,7 @@ public class SokobanState implements GPSState{
 		this.board = board;
 		this.height = height;
 		this.width = width;
+		this.boxes = boxes;
 		this.completedBoxes = completedBoxes;
 		this.playerPos = playerPos;
 		if(height <=0 || width <= 0)
@@ -61,6 +62,8 @@ public class SokobanState implements GPSState{
 		if (getClass() != obj.getClass())
 			return false;
 		SokobanState other = (SokobanState) obj;
+		if(!playerPos.equals(other.playerPos))
+			return false;
 		if (!Arrays.deepEquals(board, other.board))
 			return false;
 		return true;
@@ -99,10 +102,30 @@ public class SokobanState implements GPSState{
 	public int getCompletedBoxes() {
 		return completedBoxes;
 	}
+	public void addCompletedBox(){
+		completedBoxes++;
+	}
+	public void removeCompletedBox(){
+		completedBoxes--;
+	}
 	public int getHeight() {
 		return height;
 	}
 	public int getWidth() {
 		return width;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("**************************************\n");
+		for(int i = 0 ; i < getHeight() ; i++){
+			for(int j = 0 ; j < getWidth() ; j++){
+				sb.append(board[i][j]).append("\t");
+			}
+			sb.append("\n");
+		}
+		sb.append("**************************************\n");
+		return sb.toString();
 	}
 }

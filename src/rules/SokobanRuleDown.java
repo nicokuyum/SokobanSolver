@@ -23,17 +23,14 @@ public class SokobanRuleDown extends Moveable implements GPSRule{
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		SokobanState next = new SokobanState(s);
+		GPSState next;
 		if(!canMove(MOVE.DOWN,s)){
 			return Optional.empty();
 		}
-		if((s.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] & TILE.BOX.getValue()) != 0){
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+2] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+2] | TILE.BOX.getValue();
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] = (next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] | TILE.PLAYER.getValue()) & TILE.BOX.getValue();
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
+		if(nextToBox(MOVE.DOWN,s)){
+			next = movePlayerWithBox(MOVE.DOWN,s);
 		}else{
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()+1] | TILE.PLAYER.getValue();
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
+			next = movePlayer(MOVE.DOWN,s);
 		}
 		return Optional.of(next);
 	}

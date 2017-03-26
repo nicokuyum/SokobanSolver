@@ -2,12 +2,13 @@ package rules;
 
 import java.util.Optional;
 
+import gps.MOVE;
 import gps.SokobanState;
 import gps.TILE;
 import gps.api.GPSRule;
 import gps.api.GPSState;
 
-public class SokobanRuleLeft implements GPSRule {
+public class SokobanRuleLeft extends Moveable implements GPSRule {
 
 	@Override
 	public Integer getCost() {
@@ -22,22 +23,14 @@ public class SokobanRuleLeft implements GPSRule {
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
-		SokobanState next = new SokobanState(s);
-		if((s.getBoard()[(int)s.getPlayerPos().getX() - 1][(int)s.getPlayerPos().getY()] & TILE.WALL.getValue()) != 0){
+		GPSState next;
+		if(!canMove(MOVE.LEFT,s)){
 			return Optional.empty();
 		}
-		if((s.getBoard()[(int)s.getPlayerPos().getX()-1][(int)s.getPlayerPos().getY()] & TILE.BOX.getValue()) != 0 
-				&& ((s.getBoard()[(int)s.getPlayerPos().getX()-2][(int)s.getPlayerPos().getY()] & TILE.WALL.getValue()) != 0  
-				|| (s.getBoard()[(int)s.getPlayerPos().getX()-2][(int)s.getPlayerPos().getY()] & TILE.BOX.getValue()) != 0)){
-			return Optional.empty();
-		}
-		if((s.getBoard()[(int)s.getPlayerPos().getX()-1][(int)s.getPlayerPos().getY()] & TILE.BOX.getValue()) != 0){
-			next.getBoard()[(int)s.getPlayerPos().getX()-2][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()-2][(int)s.getPlayerPos().getY()] | TILE.BOX.getValue();
-			next.getBoard()[(int)s.getPlayerPos().getX()-1][(int)s.getPlayerPos().getY()] = (next.getBoard()[(int)s.getPlayerPos().getX()-1][(int)s.getPlayerPos().getY()] | TILE.PLAYER.getValue()) & TILE.BOX.getValue();
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
+		if(nextToBox(MOVE.LEFT,s)){
+			next = movePlayerWithBox(MOVE.LEFT,s);
 		}else{
-			next.getBoard()[(int)s.getPlayerPos().getX()-1][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()-1][(int)s.getPlayerPos().getY()] | TILE.PLAYER.getValue();
-			next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & TILE.PLAYER.getValue();
+			next = movePlayer(MOVE.LEFT,s);
 		}
 		return Optional.of(next);
 	}

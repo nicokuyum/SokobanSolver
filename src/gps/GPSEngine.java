@@ -16,7 +16,7 @@ public class GPSEngine {
 	boolean failed;
 	GPSNode solutionNode;
 
-	// Use this variable in open set order.
+	// Use this variable in open set order. 
 	protected SearchStrategy strategy;
 
 	public GPSEngine(GPSProblem myProblem, SearchStrategy myStrategy) {
@@ -33,7 +33,7 @@ public class GPSEngine {
 		GPSNode rootNode = new GPSNode(problem.getInitState(), 0);
 		open.add(rootNode);
 		// TODO: ¿Lógica de IDDFS?
-		while (open.size() <= 0) {
+		while (open.size() > 0) {
 			GPSNode currentNode = open.remove();
 			if (problem.isGoal(currentNode.getState())) {
 				finished = true;

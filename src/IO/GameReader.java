@@ -51,12 +51,7 @@ public class GameReader {
 	}
 	
 	private static void printState(SokobanState s){
-		for(int i = 0 ; i < s.getHeight() ; i++){
-			for(int j = 0 ; j < s.getWidth() ; j++){
-				System.out.print(s.getBoard()[i][j]+" ");
-			}
-			System.out.println("");
-		}
+		System.out.println(s.toString());
 		System.out.println("Height: " + s.getHeight());
 		System.out.println("Width: " + s.getWidth());
 	}

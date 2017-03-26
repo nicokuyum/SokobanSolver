@@ -22,11 +22,7 @@ public class SokobanProblem implements GPSProblem {
 		st = s;
 		setRules();
 	}
-	
-	public SokobanProblem(SokobanState start){
-		st = start;
-		setRules();
-	}
+
 	private void setRules(){
 		rules.add(new SokobanRuleDown());
 		rules.add(new SokobanRuleLeft());
