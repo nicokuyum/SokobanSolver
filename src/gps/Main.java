@@ -19,6 +19,7 @@ public class Main {
             if(!engine.isFailed()){
                 GPSNode n = engine.getSolutionNode();
                 System.out.println(n.getSolution());
+                System.out.println(n.getCost());
             }else{
                 System.out.printf("NO TERMINO");
             }

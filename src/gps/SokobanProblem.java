@@ -53,7 +53,7 @@ public class SokobanProblem implements GPSProblem {
 				return Integer.MAX_VALUE; //CASO DONDE UNA CAJA ESTA MUERTA POR ESTAR CONTRA PAREDES
 			}
 		}
-		return null;
+		return 0;
 	}
 
 }

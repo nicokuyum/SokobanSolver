@@ -5,6 +5,7 @@ import java.util.*;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+import rules.NodeComparator;
 
 public class GPSEngine {
 
@@ -75,9 +76,12 @@ public class GPSEngine {
 			// TODO: ¿Cómo se agregan los nodos a open en IDDFS?
 			break;
 		case GREEDY:
-			newCandidates = new PriorityQueue<>(/* TODO: Comparator! */);
+			if (bestCosts.containsKey(node.getState())) {
+				return;
+			}
+			newCandidates = new PriorityQueue<>(new NodeComparator(problem));
 			addCandidates(node, newCandidates);
-            open.addAll(newCandidates);
+			((LinkedList<GPSNode>)open).addAll(0,newCandidates);
 			break;
 		case ASTAR: //Esta creo que es asi
 			if (!isBest(node.getState(), node.getCost())) {
@@ -85,7 +89,7 @@ public class GPSEngine {
 			}
 			newCandidates = new ArrayList<>();
 			addCandidates(node, newCandidates);
-            ((LinkedList<GPSNode>)open).addAll(0,newCandidates);
+            open.addAll(newCandidates);
 			break;
 		}
 	}

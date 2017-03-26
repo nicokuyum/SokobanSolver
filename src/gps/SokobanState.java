@@ -40,7 +40,7 @@ public class SokobanState implements GPSState{
 	public void moveBox(MOVE m){
 		for(Point b : boxes){
 			if(b.x == playerPos.x + m.getX() && b.y == playerPos.y + m.getY()){
-				b.setLocation(b.getX() + 2*m.getX(),b.getY() + 2*m.getY());
+				b.setLocation(b.getX() + m.getX(),b.getY() + m.getY());
 			}
 		}
 	}
