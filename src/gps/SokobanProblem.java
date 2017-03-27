@@ -53,7 +53,21 @@ public class SokobanProblem implements GPSProblem {
 				return Integer.MAX_VALUE; //CASO DONDE UNA CAJA ESTA MUERTA POR ESTAR CONTRA PAREDES
 			}
 		}
-		return 0;
+		int totalPlayerToBoxDistance = 0;
+		int totalBoxToTargetDistance = 0;
+		for(Point b : s.boxes){
+			int shortest = Integer.MAX_VALUE;
+			
+			for(Point g : s.goals){
+				int dist = Math.abs((g.x - b.x)) + Math.abs((g.y - b.y));
+				if(dist < shortest){
+					shortest = dist;
+				}
+			}
+			totalBoxToTargetDistance+= shortest;
+			totalPlayerToBoxDistance+= Math.abs(s.playerPos.x - b.x) + Math.abs(s.playerPos.y - b.y);
+		}
+		return totalBoxToTargetDistance;
 	}
 
 }

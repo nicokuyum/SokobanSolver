@@ -12,22 +12,24 @@ public class SokobanState implements GPSState{
 	int[][] board;
 	Point playerPos;
 	List<Point> boxes;
+	List<Point> goals;
 	int completedBoxes;
 	int height;
 	int width;
 	
-	public SokobanState(int[][] board, Point playerPos,List<Point> boxes, int width, int height, int completedBoxes) {
+	public SokobanState(int[][] board, Point playerPos,List<Point> boxes,List<Point> goals, int width, int height, int completedBoxes) {
 		this.board = board;
 		this.height = height;
 		this.width = width;
 		this.boxes = boxes;
 		this.completedBoxes = completedBoxes;
 		this.playerPos = playerPos;
+		this.goals = goals;
 		if(height <=0 || width <= 0)
 			throw new IllegalArgumentException("Illegal map size parameters");
 	}
 	public SokobanState(SokobanState original) {
-		this(copyBoard(original.board),new Point(original.playerPos), copyBoxes(original.boxes), original.width,original.height,original.completedBoxes);
+		this(copyBoard(original.board),new Point(original.playerPos), copyBoxes(original.boxes),original.goals, original.width,original.height,original.completedBoxes);
 	}
 	
 	public boolean hasWon(){

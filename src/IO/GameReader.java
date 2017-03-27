@@ -22,7 +22,7 @@ public class GameReader {
 			int completedBoxes = 0;
 			
 			List<Point> boxes = new ArrayList<Point>();
-			
+			List<Point> goals = new ArrayList<Point>();
 			Point playerPos = null;
 			
 			int[][] matrix = new int[rows][cols];
@@ -31,6 +31,9 @@ public class GameReader {
 				for(int j = 0 ; j < cols ; j++){
 					int read = in.nextInt();
 					matrix[i][j] = read;
+					if((read & TILE.TARGET.getValue() ) != 0){
+						goals.add(new Point(i,j));
+					}
 					if((read & TILE.BOX.getValue()) != 0){
 						boxes.add(new Point(i,j));
 						if((read & TILE.TARGET.getValue()) != 0)
@@ -43,9 +46,9 @@ public class GameReader {
 					}
 				}
 			}
-			SokobanState s = new SokobanState(matrix, playerPos, boxes, cols, rows, completedBoxes);
+			SokobanState s = new SokobanState(matrix, playerPos, boxes,goals, cols, rows, completedBoxes);
 			
-			printState(s);
+			//printState(s);
 			return s;
 			
 	}
