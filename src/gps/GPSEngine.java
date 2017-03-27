@@ -1,10 +1,18 @@
 package gps;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+import rules.AStarComparator;
 import rules.NodeComparator;
 
 public class GPSEngine {
@@ -21,7 +29,17 @@ public class GPSEngine {
 	protected SearchStrategy strategy;
 
 	public GPSEngine(GPSProblem myProblem, SearchStrategy myStrategy) {
-		open = new LinkedList<>();
+		switch(myStrategy){
+			case BFS:
+			case DFS:
+			case IDDFS:
+			case GREEDY:
+				open = new LinkedList<>(); 
+				break;
+			case ASTAR:
+				open = new PriorityQueue<>(new AStarComparator(myProblem));
+				break;
+		}
 		bestCosts = new HashMap<>();
 		problem = myProblem;
 		strategy = myStrategy;
@@ -31,21 +49,32 @@ public class GPSEngine {
 	}
 
 	public void findSolution() {
-		GPSNode rootNode = new GPSNode(problem.getInitState(), 0);
+		GPSNode rootNode = new GPSNode(problem.getInitState(), 0,null);
 		open.add(rootNode);
 		// TODO: ¿Lógica de IDDFS?
-		while (open.size() > 0) {
-			GPSNode currentNode = open.remove();
-			if (problem.isGoal(currentNode.getState())) {
-				finished = true;
-				solutionNode = currentNode;
-				return;
-			} else {
-				explode(currentNode);
+		switch(strategy){
+		case DFS:
+		case BFS:
+		case ASTAR:
+		case GREEDY:
+			while (open.size() > 0) {
+				GPSNode currentNode = open.remove();
+				if (problem.isGoal(currentNode.getState())) {
+					finished = true;
+					solutionNode = currentNode;
+					return;
+				} else {
+					explode(currentNode);
+				}
 			}
+			failed = true;
+			finished = true;	
+			break;
+		case IDDFS:
+			
+			break;
 		}
-		failed = true;
-		finished = true;
+		
 	}
 
 	private void explode(GPSNode node) {
@@ -100,7 +129,7 @@ public class GPSEngine {
 		for (GPSRule rule : problem.getRules()) {
 			Optional<GPSState> newState = rule.evalRule(node.getState());
 			if (newState.isPresent()) {
-				GPSNode newNode = new GPSNode(newState.get(), node.getCost() + rule.getCost());
+				GPSNode newNode = new GPSNode(newState.get(), node.getCost() + rule.getCost(),rule);
 				newNode.setParent(node);
 				candidates.add(newNode);
 			}

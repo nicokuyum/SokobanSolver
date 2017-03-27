@@ -14,7 +14,7 @@ public class Main {
         try {
             GPSState s = GameReader.open("tablero.txt");
             GPSProblem problem = new SokobanProblem(s);
-            GPSEngine engine = new GPSEngine(problem,SearchStrategy.BFS);
+            GPSEngine engine = new GPSEngine(problem,SearchStrategy.GREEDY);
             engine.findSolution();
             if(!engine.isFailed()){
                 GPSNode n = engine.getSolutionNode();

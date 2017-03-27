@@ -1,5 +1,6 @@
 package gps;
 
+import gps.api.GPSRule;
 import gps.api.GPSState;
 
 public class GPSNode {
@@ -9,10 +10,12 @@ public class GPSNode {
 	private GPSNode parent;
 
 	private Integer cost;
-
-	public GPSNode(GPSState state, Integer cost) {
+	
+	private GPSRule generationRule;
+	public GPSNode(GPSState state, Integer cost, GPSRule generationRule) {
 		this.state = state;
 		this.cost = cost;
+		this.generationRule = generationRule;
 	}
 
 	public GPSNode getParent() {
@@ -40,7 +43,7 @@ public class GPSNode {
 		if (this.parent == null) {
 			return this.state.toString();
 		}
-		return this.parent.getSolution() + this.state.toString();
+		return this.parent.getSolution() +"\n" + generationRule.getName() + "\n" + this.state.toString() ;
 	}
 
 	@Override
@@ -58,6 +61,14 @@ public class GPSNode {
 		} else if (!state.equals(other.state))
 			return false;
 		return true;
+	}
+	
+	public void setGenerationRule(GPSRule r){
+		this.generationRule = r;
+	}
+	
+	public GPSRule getGenerationRule(){
+		return generationRule;
 	}
 
 }

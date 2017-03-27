@@ -46,4 +46,5 @@ public abstract class Moveable {
 		}
 		return next;
 	}
+	
 }
