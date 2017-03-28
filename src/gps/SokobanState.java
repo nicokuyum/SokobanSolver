@@ -116,6 +116,11 @@ public class SokobanState implements GPSState{
 	public int getWidth() {
 		return width;
 	}
+	
+	public List<Point> getGoals(){
+		return this.goals;
+	}
+
 
 	@Override
 	public String toString() {

@@ -48,12 +48,11 @@ public class GameReader {
 			}
 			SokobanState s = new SokobanState(matrix, playerPos, boxes,goals, cols, rows, completedBoxes);
 			
-			//printState(s);
 			return s;
 			
 	}
 	
-	private static void printState(SokobanState s){
+	public static void printState(SokobanState s){
 		System.out.println(s.toString());
 		System.out.println("Height: " + s.getHeight());
 		System.out.println("Width: " + s.getWidth());
