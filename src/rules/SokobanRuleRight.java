@@ -29,6 +29,9 @@ public class SokobanRuleRight extends Moveable implements GPSRule{
 		}
 		if(nextToBox(MOVE.RIGHT,s)){
 			next = movePlayerWithBox(MOVE.RIGHT,s);
+			if(next == null){
+				return Optional.empty();
+			}
 		}else{
 			next = movePlayer(MOVE.RIGHT,s);
 		}

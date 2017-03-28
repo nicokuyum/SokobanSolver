@@ -38,6 +38,10 @@ public abstract class Moveable {
 		next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & (255 - TILE.PLAYER.getValue());
 		next.movePlayer(m);
 		next.moveBox(m);
+		int target = next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2];
+		if((target & TILE.DEADLOCK.getValue()) != 0) {
+			return null;
+		}
 		if((next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2] & TILE.TARGET.getValue()) != 0) {
 			next.addCompletedBox();
 		}

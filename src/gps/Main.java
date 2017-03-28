@@ -14,7 +14,7 @@ public class Main {
         try {
         	for(SearchStrategy ss : SearchStrategy.values()){
         		if(ss != SearchStrategy.IDDFS){
-	        		GPSState s = GameReader.open("tablero.txt");
+	        		GPSState s = GameReader.open("tablero3.txt");
 	        		
 	        		//GameReader.printState((SokobanState)s);
 	        		

@@ -29,6 +29,9 @@ public class SokobanRuleDown extends Moveable implements GPSRule{
 		}
 		if(nextToBox(MOVE.DOWN,s)){
 			next = movePlayerWithBox(MOVE.DOWN,s);
+			if(next == null){
+				return Optional.empty();
+			}
 		}else{
 			next = movePlayer(MOVE.DOWN,s);
 		}
