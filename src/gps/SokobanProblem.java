@@ -14,6 +14,8 @@ import rules.SokobanRuleUp;
 
 public class SokobanProblem implements GPSProblem {
 	
+	public static int heuristic = 1;
+	
 	List<GPSRule> rules = new ArrayList<>();
 	GPSState st;
 	GPSState fin;
@@ -47,6 +49,29 @@ public class SokobanProblem implements GPSProblem {
 
 	@Override
 	public Integer getHValue(GPSState state) {
+		switch(heuristic){
+		case 1: return getHValue1(state);
+		case 2: return getHValue2(state);
+		default: return getHValue1(state);
+		}
+	}
+	
+	private Integer getHValue1(GPSState state){
+		SokobanState s = (SokobanState) state;
+		int totalDistance = 0;
+		for(Point box: s.getBoxes()){
+			int min = s.getWidth()+s.getHeight();
+			for(Point goal: s.getGoals()){
+				int dist = Math.abs(box.x-goal.x)+Math.abs(box.y-goal.y);
+				if(dist<min)
+					min = dist;
+			}
+			totalDistance += min;
+		}
+		return totalDistance;
+	}
+
+	public Integer getHValue2(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		for(Point p : s.boxes){
 			if((s.board[p.x][p.y] & TILE.DEADLOCK.getValue()) != 0){
@@ -72,5 +97,4 @@ public class SokobanProblem implements GPSProblem {
 		}
 		return totalBoxToTargetDistance + totalPlayerToBoxDistance;
 	}
-
 }
