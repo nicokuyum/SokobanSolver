@@ -1,6 +1,10 @@
 package gps;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import IO.GameReader;
+import IO.GraphicBoard;
 import gps.api.GPSProblem;
 import gps.api.GPSState;
 
@@ -11,10 +15,9 @@ public class Main {
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
+        List<SokobanState> solve = new ArrayList<>();
         try {
-        	for(SearchStrategy ss : SearchStrategy.values()){
-        		if(ss != SearchStrategy.IDDFS){
-	        		GPSState s = GameReader.open("tablero3.txt");
+	        		GPSState s = GameReader.open("tablero4.txt");
 	        		
 	        		//GameReader.printState((SokobanState)s);
 	        		
@@ -28,20 +31,30 @@ public class Main {
 	        			return;
 	        		}
 	                GPSProblem problem = new SokobanProblem(processed_state);
-	                GPSEngine engine = new GPSEngine(problem,ss);
+	                GPSEngine engine = new GPSEngine(problem,SearchStrategy.BFS);
 	                engine.findSolution();
 	                if(!engine.isFailed()){
 	                    GPSNode n = engine.getSolutionNode();
 	                    //System.out.println(n.getSolution());
-	                    System.out.print(ss.toString() +" " + n.getCost());
+	                    GraphicBoard.setBoardSize(((SokobanState)n.getState()).width,((SokobanState)n.getState()).height);
+	                    GraphicBoard.activate();
+	                    GPSNode parent = n;
+		                while(parent != null){
+		                	solve.add((SokobanState)parent.getState());
+	                    	parent = parent.getParent();
+		                }
+	                    
+		                
+	                    System.out.print(SearchStrategy.BFS.toString() +" " + n.getCost());
 	                }else{
 	                    System.out.printf("NO TERMINO");
 	                }
 	                System.out.print(" " + (System.currentTimeMillis() - time) + "\n");
 	                time = System.currentTimeMillis();
-        		}
-        	}
-            
+	                	for(int j = solve.size()-1;j>=0;j--){
+                    	GraphicBoard.getInstance().setBoard(solve.get(j));
+                    	Thread.sleep(500);
+	                	}
         }catch (Exception e){
             e.printStackTrace();
         }
