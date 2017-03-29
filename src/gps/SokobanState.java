@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SokobanState implements GPSState{
 	
-	int[][] board;
+	byte[][] board;
 	Point playerPos;
 	List<Point> boxes;
 	List<Point> goals;
@@ -18,7 +18,7 @@ public class SokobanState implements GPSState{
 	int width;
 	int hValue = -1;
 	
-	public SokobanState(int[][] board, Point playerPos,List<Point> boxes,List<Point> goals, int width, int height, int completedBoxes) {
+	public SokobanState(byte[][] board, Point playerPos,List<Point> boxes,List<Point> goals, int width, int height, int completedBoxes) {
 		this.board = board;
 		this.height = height;
 		this.width = width;
@@ -72,8 +72,8 @@ public class SokobanState implements GPSState{
 		return true;
 	}
 	
-	public static int[][] copyBoard(int[][] original){
-		int[][] copy = new int[original.length][original[0].length];
+	public static byte[][] copyBoard(byte[][] original){
+		byte[][] copy = new byte[original.length][original[0].length];
 		for(int i = 0; i<original.length;i++){
 			for(int j = 0; j<original[0].length;j++){
 				copy[i][j] = original[i][j];
@@ -90,7 +90,7 @@ public class SokobanState implements GPSState{
 		return copy;
 	}
 	
-	public int[][] getBoard(){
+	public byte[][] getBoard(){
 		return board;
 	}
 	

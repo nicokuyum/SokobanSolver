@@ -9,8 +9,8 @@ import java.util.Queue;
 public class DeadLockFinder {
 
 	SokobanState s;
-	int[][] original;
-	int[][] matrix = null;
+	byte[][] original;
+	byte[][] matrix = null;
 	int fil = 0;
 	int col = 0;
 	
@@ -31,12 +31,12 @@ public class DeadLockFinder {
 		this.original = s.getBoard();
 		fil = original.length;
 		col = original[0].length;
-		this.matrix = new int[fil][col];
+		this.matrix = new byte[fil][col];
 		goals = new LinkedList<Point>();
 		copyOnlyObjectivesAndWalls(original,matrix,fil,col);
 	}
 	
-	private void copyOnlyObjectivesAndWalls(int[][] original, int[][] target, int fil, int col){
+	private void copyOnlyObjectivesAndWalls(byte[][] original, byte[][] target, int fil, int col){
 		for(int i=0; i<fil; i++){
 			for(int j=0; j<col; j++){
 				int x = original[i][j];
@@ -46,7 +46,7 @@ public class DeadLockFinder {
 					x = GOAL;
 					goals.add(new Point(i,j));
 				}
-				target[i][j] = x;
+				target[i][j] = (byte)x;
 			}
 		}
 	}
@@ -69,7 +69,7 @@ public class DeadLockFinder {
 		}
 		
 		
-		int[][] res = new int[fil][col];
+		byte[][] res = new byte[fil][col];
 		
 		for(int i=0; i<fil; i++){
 			for(int j=0; j<col; j++){
@@ -77,7 +77,7 @@ public class DeadLockFinder {
 				if(v == WALL || v == GOAL || v == SAFEZONE)
 					res[i][j] = original[i][j];
 				else if(v == FREE)
-					res[i][j] = original[i][j]+DEADLOCK;
+					res[i][j] = (byte)(original[i][j]+DEADLOCK);
 				else
 					return null;
 			}
@@ -108,7 +108,7 @@ public class DeadLockFinder {
 	}
 	
 	private void set(Point p, int val){
-		matrix[p.x][p.y] = val;
+		matrix[p.x][p.y] = (byte)val;
 	}
 	
 }

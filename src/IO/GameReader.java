@@ -25,12 +25,12 @@ public class GameReader {
 			List<Point> goals = new ArrayList<Point>();
 			Point playerPos = null;
 			
-			int[][] matrix = new int[rows][cols];
+			byte[][] matrix = new byte[rows][cols];
 			
 			for(int i = 0 ; i < rows ; i++){		
 				for(int j = 0 ; j < cols ; j++){
 					int read = in.nextInt();
-					matrix[i][j] = read;
+					matrix[i][j] = (byte)read;
 					if((read & TILE.TARGET.getValue() ) != 0){
 						goals.add(new Point(i,j));
 					}
