@@ -23,7 +23,7 @@ public class Main {
         List<SokobanState> solve = new ArrayList<>();
         try {		
         			System.out.println("Starting...");
-	        		GPSState s = GameReader.open("tablero7.txt");
+	        		GPSState s = GameReader.open("tablero3.txt");
 	        		
 	        		GameReader.printState((SokobanState)s);
 	        		

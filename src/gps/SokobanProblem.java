@@ -14,7 +14,7 @@ import rules.SokobanRuleUp;
 
 public class SokobanProblem implements GPSProblem {
 
-	public static int heuristic = 2;
+	public static int heuristic = 4;
 
 	List<GPSRule> rules = new ArrayList<>();
 	GPSState st;
@@ -55,8 +55,12 @@ public class SokobanProblem implements GPSProblem {
 			return getHValue1(state);
 		case 2:
 			return getHValue2(state);
+		case 3:
+			return getHValue3(state);
+		case 4:
+			return getHValue4(state);
 		default:
-			return getHValue1(state);
+			return getHValue2(state);
 		}
 	}
 
@@ -82,7 +86,7 @@ public class SokobanProblem implements GPSProblem {
 			int totalBoxToTargetDistance = 0;
 			for (Point b : s.boxes) {
 				
-				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y));
+				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
 				if (aux < totalPlayerToBoxDistance) {
 					totalPlayerToBoxDistance = aux;
 				}
@@ -98,10 +102,55 @@ public class SokobanProblem implements GPSProblem {
 				totalBoxToTargetDistance += shortest;
 
 			}
-			s.setHValue(totalBoxToTargetDistance + totalPlayerToBoxDistance);
+			s.setHValue(totalBoxToTargetDistance+ totalPlayerToBoxDistance);
 			return totalBoxToTargetDistance + totalPlayerToBoxDistance;
 		} else {
-			//System.out.println("AHORRE");
+			return s.getHValue();
+		}
+	}
+	
+	public Integer getHValue3(GPSState state) {
+		SokobanState s = (SokobanState) state;
+		if (s.getHValue() == -1) {
+			int totalPlayerToBoxDistance = Integer.MAX_VALUE;
+			int totalBoxToTargetDistance = 0;
+			for (Point b : s.boxes) {
+				
+				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
+				if (aux < totalPlayerToBoxDistance) {
+					totalPlayerToBoxDistance = aux;
+				}
+				
+				int shortest = Integer.MAX_VALUE;
+				
+				for (Point g : s.goals) {
+					int dist = Math.abs((g.x - b.x)) + Math.abs((g.y - b.y));
+					if (dist < shortest && ((s.getBoard()[g.x][g.y] & TILE.BOX.getValue()) != 0)) {
+						shortest = dist;
+					}
+				}
+				totalBoxToTargetDistance += shortest;
+
+			}
+			s.setHValue(totalBoxToTargetDistance+ totalPlayerToBoxDistance);
+			return totalBoxToTargetDistance + totalPlayerToBoxDistance;
+		} else {
+			return s.getHValue();
+		}
+	}
+	public Integer getHValue4(GPSState state) {
+		SokobanState s = (SokobanState) state;
+		if (s.getHValue() == -1) {
+			int totalPlayerToBoxDistance = Integer.MAX_VALUE;
+			for (Point b : s.boxes) {
+				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
+				if (aux < totalPlayerToBoxDistance) {
+					totalPlayerToBoxDistance = aux;
+				}
+			}
+			s.setHValue(totalPlayerToBoxDistance);
+			return totalPlayerToBoxDistance;
+		} else {
 			return s.getHValue();
 		}
 	}

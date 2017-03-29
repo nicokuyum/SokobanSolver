@@ -48,9 +48,6 @@ public abstract class Moveable {
 	}
 	public boolean moveToDeadlock(MOVE m, SokobanState s){
 		int target = s.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2];
-		if((target & TILE.DEADLOCK.getValue()) != 0) {
-			return true;
-		}
-		return false;
+		return ((target & TILE.DEADLOCK.getValue()) != 0);
 	}
 }
