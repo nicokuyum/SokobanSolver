@@ -16,21 +16,22 @@ import IO.GraphicBoard;
  */
 public class Main {
 	
-	public static final SearchStrategy ss = SearchStrategy.DFS;
+	public static final SearchStrategy ss = SearchStrategy.ASTAR;
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
         List<SokobanState> solve = new ArrayList<>();
-        try {
+        try {		
         			System.out.println("Starting...");
-	        		GPSState s = GameReader.open("tablero4.txt");
+	        		GPSState s = GameReader.open("tablero7.txt");
 	        		
-	        		//GameReader.printState((SokobanState)s);
+	        		GameReader.printState((SokobanState)s);
 	        		
 	        		DeadLockFinder dlf = new DeadLockFinder((SokobanState)s);
 	        		GPSState processed_state = dlf.getStateWithDeadLocks();
-	        		
-	        		//GameReader.printState((SokobanState)processed_state);
+                  
+	        		//GraphicBoard.getInstance().setBoard((SokobanState)processed_state);
+	        		GameReader.printState((SokobanState)processed_state);
 	        		
 	        		if(processed_state == null){
 	        			System.out.println("El tablero inicial no puede ser resuelto");

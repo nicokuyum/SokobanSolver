@@ -28,10 +28,10 @@ public class SokobanRuleDown extends Moveable implements GPSRule{
 			return Optional.empty();
 		}
 		if(nextToBox(MOVE.DOWN,s)){
-			next = movePlayerWithBox(MOVE.DOWN,s);
-			if(next == null){
+			if(moveToDeadlock(MOVE.DOWN, s)){
 				return Optional.empty();
 			}
+			next = movePlayerWithBox(MOVE.DOWN,s);
 		}else{
 			next = movePlayer(MOVE.DOWN,s);
 		}

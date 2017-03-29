@@ -36,12 +36,8 @@ public abstract class Moveable {
 		next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2] = next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2][(int)s.getPlayerPos().getY() + m.getY()*2] | TILE.BOX.getValue();
 		next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()][(int)s.getPlayerPos().getY() + m.getY()] = (next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()][(int)s.getPlayerPos().getY() + m.getY()] | TILE.PLAYER.getValue()) & (255 - TILE.BOX.getValue());
 		next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] = next.getBoard()[(int)s.getPlayerPos().getX()][(int)s.getPlayerPos().getY()] & (255 - TILE.PLAYER.getValue());
-		next.movePlayer(m);
 		next.moveBox(m);
-		int target = next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2];
-		if((target & TILE.DEADLOCK.getValue()) != 0) {
-			return null;
-		}
+		next.movePlayer(m);
 		if((next.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2] & TILE.TARGET.getValue()) != 0) {
 			next.addCompletedBox();
 		}
@@ -50,5 +46,11 @@ public abstract class Moveable {
 		}
 		return next;
 	}
-	
+	public boolean moveToDeadlock(MOVE m, SokobanState s){
+		int target = s.getBoard()[(int)s.getPlayerPos().getX() + m.getX()*2 ][(int)s.getPlayerPos().getY() + m.getY()*2];
+		if((target & TILE.DEADLOCK.getValue()) != 0) {
+			return true;
+		}
+		return false;
+	}
 }

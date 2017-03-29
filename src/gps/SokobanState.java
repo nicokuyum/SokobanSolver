@@ -16,6 +16,7 @@ public class SokobanState implements GPSState{
 	int completedBoxes;
 	int height;
 	int width;
+	int hValue = -1;
 	
 	public SokobanState(int[][] board, Point playerPos,List<Point> boxes,List<Point> goals, int width, int height, int completedBoxes) {
 		this.board = board;
@@ -134,5 +135,13 @@ public class SokobanState implements GPSState{
 		}
 		sb.append("**************************************\n");
 		return sb.toString();
+	}
+	
+	public int getHValue(){
+		return hValue;
+	}
+	
+	public void setHValue(int v){
+		hValue = v;
 	}
 }
