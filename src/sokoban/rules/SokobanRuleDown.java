@@ -1,14 +1,14 @@
-package rules;
+package sokoban.rules;
 
 import java.util.Optional;
 
-import gps.MOVE;
-import gps.SokobanState;
-import gps.TILE;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+import sokoban.MOVE;
+import sokoban.SokobanState;
+import sokoban.TILE;
 
-public class SokobanRuleRight extends Moveable implements GPSRule{
+public class SokobanRuleDown extends Moveable implements GPSRule{
 
 	@Override
 	public Integer getCost() {
@@ -17,23 +17,23 @@ public class SokobanRuleRight extends Moveable implements GPSRule{
 
 	@Override
 	public String getName() {
-		return "Move Player Right";
+		return "Move Player Down";
 	}
 
 	@Override
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		GPSState next;
-		if(!canMove(MOVE.RIGHT,s)){
+		if(!canMove(MOVE.DOWN,s)){
 			return Optional.empty();
 		}
-		if(nextToBox(MOVE.RIGHT,s)){
-			if(moveToDeadlock(MOVE.RIGHT, s)){
+		if(nextToBox(MOVE.DOWN,s)){
+			if(moveToDeadlock(MOVE.DOWN, s)){
 				return Optional.empty();
 			}
-			next = movePlayerWithBox(MOVE.RIGHT,s);
+			next = movePlayerWithBox(MOVE.DOWN,s);
 		}else{
-			next = movePlayer(MOVE.RIGHT,s);
+			next = movePlayer(MOVE.DOWN,s);
 		}
 		return Optional.of(next);
 	}

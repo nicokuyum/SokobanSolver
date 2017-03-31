@@ -1,8 +1,7 @@
-package rules;
+package gps;
 
 import java.util.Comparator;
 
-import gps.GPSNode;
 import gps.api.GPSProblem;
 
 public class AStarComparator implements Comparator<GPSNode>{

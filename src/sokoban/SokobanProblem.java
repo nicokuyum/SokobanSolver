@@ -1,4 +1,4 @@
-package gps;
+package sokoban;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -7,14 +7,14 @@ import java.util.List;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
-import rules.SokobanRuleDown;
-import rules.SokobanRuleLeft;
-import rules.SokobanRuleRight;
-import rules.SokobanRuleUp;
+import sokoban.rules.SokobanRuleDown;
+import sokoban.rules.SokobanRuleLeft;
+import sokoban.rules.SokobanRuleRight;
+import sokoban.rules.SokobanRuleUp;
 
 public class SokobanProblem implements GPSProblem {
 
-	public static int heuristic = 4;
+	public static int heuristic = 2;
 
 	List<GPSRule> rules = new ArrayList<>();
 	GPSState st;

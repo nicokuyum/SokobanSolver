@@ -1,9 +1,9 @@
-package rules;
+package sokoban.rules;
 
-import gps.MOVE;
-import gps.SokobanState;
-import gps.TILE;
 import gps.api.GPSState;
+import sokoban.MOVE;
+import sokoban.SokobanState;
+import sokoban.TILE;
 
 public abstract class Moveable {
 

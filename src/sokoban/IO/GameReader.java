@@ -1,12 +1,12 @@
-package IO;
-import gps.SokobanState;
-import gps.TILE;
-
+package sokoban.IO;
 import java.awt.Point;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import sokoban.SokobanState;
+import sokoban.TILE;
 
 public class GameReader {
 	

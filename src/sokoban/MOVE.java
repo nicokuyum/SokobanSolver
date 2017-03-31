@@ -1,4 +1,4 @@
-package gps;
+package sokoban;
 
 public enum MOVE {
 	LEFT(0,-1),

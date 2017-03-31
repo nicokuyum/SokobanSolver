@@ -12,8 +12,6 @@ import java.util.Queue;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
-import rules.AStarComparator;
-import rules.NodeComparator;
 
 public class GPSEngine {
 
@@ -108,7 +106,7 @@ public class GPSEngine {
 			if (bestCosts.containsKey(node.getState())) {
 				return;
 			}
-			newCandidates = new PriorityQueue<>(new NodeComparator(problem));
+			newCandidates = new PriorityQueue<>(new GreedyComparator(problem));
 			addCandidates(node, newCandidates);
 			((LinkedList<GPSNode>)open).addAll(0,newCandidates);
 			break;

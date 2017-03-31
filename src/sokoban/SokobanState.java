@@ -1,4 +1,4 @@
-package gps;
+package sokoban;
 
 import gps.api.GPSState;
 

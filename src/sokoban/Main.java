@@ -1,5 +1,8 @@
-package gps;
+package sokoban;
 
+import gps.GPSEngine;
+import gps.GPSNode;
+import gps.SearchStrategy;
 import gps.api.GPSProblem;
 import gps.api.GPSState;
 
@@ -8,8 +11,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import IO.GameReader;
-import IO.GraphicBoard;
+import sokoban.IO.GameReader;
+import sokoban.IO.GraphicBoard;
 
 /**
  * Created by lucas on 26/03/17.

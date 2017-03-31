@@ -1,4 +1,4 @@
-package gps;
+package sokoban;
 
 public enum TILE {
 	EMPTY(0),

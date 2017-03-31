@@ -1,4 +1,4 @@
-package gps;
+package sokoban;
 
 import java.awt.Point;
 import java.util.ArrayList;
