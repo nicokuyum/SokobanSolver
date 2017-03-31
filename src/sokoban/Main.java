@@ -1,39 +1,56 @@
 package sokoban;
 
+import java.io.FileNotFoundException;
+
 import gps.GPSEngine;
 import gps.GPSNode;
 import gps.SearchStrategy;
 import gps.api.GPSProblem;
 import gps.api.GPSState;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFrame;
-
 import sokoban.IO.GameReader;
-import sokoban.IO.GraphicBoard;
+import sokoban.IO.GraphicManager;
 
 /**
  * Created by lucas on 26/03/17.
  */
 public class Main {
-	
-	public static final SearchStrategy ss = SearchStrategy.ASTAR;
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        List<SokobanState> solve = new ArrayList<>();
+        boolean visual = false;
         try {		
+        			SearchStrategy ss = SearchStrategy.BFS;
         			System.out.println("Starting...");
-	        		GPSState s = GameReader.open("tablero3.txt");
-	        		
+        			GPSState s = null;
+        			if(args.length == 0){
+        				System.err.println("No board file selected");
+        			}else{
+        				s = GameReader.open(args[0]);
+        			}
+        			if(args.length == 1){
+        				System.out.println("No Search Strategy Selected, default is BFS");
+        			}else{
+        				if(args[1].equals(SearchStrategy.BFS.toString())){
+        					ss = SearchStrategy.BFS;
+        				}else if(args[1].equals(SearchStrategy.DFS.toString())){
+        					ss = SearchStrategy.DFS;
+        				}else if(args[1].equals(SearchStrategy.ASTAR.toString())){
+        					ss = SearchStrategy.ASTAR;
+        				}else if(args[1].equals(SearchStrategy.IDDFS.toString())){
+        					ss = SearchStrategy.IDDFS;
+        				}else if(args[1].equals(SearchStrategy.GREEDY.toString())){
+        					ss = SearchStrategy.GREEDY;
+        				}else{
+        					System.out.println("Invalid Search Strategy, default is BFS");
+        				}
+        			}
+        			visual = (args.length >= 3 && args[2].equals("visual"));
+        			
 	        		GameReader.printState((SokobanState)s);
 	        		
 	        		DeadLockFinder dlf = new DeadLockFinder((SokobanState)s);
 	        		GPSState processed_state = dlf.getStateWithDeadLocks();
-                  
-	        		//GraphicBoard.getInstance().setBoard((SokobanState)processed_state);
 	        		GameReader.printState((SokobanState)processed_state);
 	        		
 	        		if(processed_state == null){
@@ -44,30 +61,16 @@ public class Main {
 	                GPSEngine engine = new GPSEngine(problem,ss);
 	                engine.findSolution();
 	                if(!engine.isFailed()){
-	                    GPSNode n = engine.getSolutionNode();
-	                    //System.out.println(n.getSolution());
-	                    GraphicBoard.setBoardSize(((SokobanState)n.getState()).width,((SokobanState)n.getState()).height);
-	                    GraphicBoard.activate();
-	                    GraphicBoard.getInstance().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	                    GPSNode parent = n;
-		                while(parent != null){
-		                	solve.add((SokobanState)parent.getState());
-	                    	parent = parent.getParent();
-		                }
-	                    
-		                
-	                    System.out.print(ss.toString() +" " + n.getCost());
+	                    System.out.print(ss.toString() +" " + engine.getSolutionNode().getCost());
 	                }else{
 	                    System.out.printf("NO TERMINO");
 	                }
-	                System.out.print(" " + (System.currentTimeMillis() - time) + "\n");
-	                time = System.currentTimeMillis();
-	                for(int j = solve.size()-1;j>=0;j--){
-                    	GraphicBoard.getInstance().setBoard(solve.get(j));
-                    	Thread.sleep(500);
-	                }
-        }catch (Exception e){
-            e.printStackTrace();
+	                System.out.print(" " + (System.currentTimeMillis() - time) + "\n");              
+	                if(visual)
+	                	GraphicManager.startAnimation(engine.getSolutionNode());
+	                
+        }catch (FileNotFoundException e){
+            System.err.println("No such file");
         }
     }
 }

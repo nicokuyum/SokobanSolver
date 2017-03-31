@@ -169,7 +169,7 @@ public class GPSEngine {
 	}
 
 	public GPSNode getSolutionNode() {
-		System.out.println(explosionCounter);
+		//System.out.println(explosionCounter);
 		return solutionNode;
 	}
 
