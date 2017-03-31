@@ -1,17 +1,10 @@
 package gps;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.PriorityQueue;
-import java.util.Queue;
-
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+
+import java.util.*;
 
 public class GPSEngine {
 
@@ -47,77 +40,102 @@ public class GPSEngine {
 	}
 
 	public void findSolution() {
-		GPSNode rootNode = new GPSNode(problem.getInitState(), 0,null);
+		GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null);
 		open.add(rootNode);
 		// TODO: ¿Lógica de IDDFS?
-		switch(strategy){
-		case DFS:
-		case BFS:
-		case ASTAR:
-		case GREEDY:
-			while (open.size() > 0) {
-				GPSNode currentNode = open.remove();
-				if (problem.isGoal(currentNode.getState())) {
-					finished = true;
-					solutionNode = currentNode;
-					return;
-				} else {
-					explode(currentNode);
+		switch (strategy) {
+			case DFS:
+			case BFS:
+			case ASTAR:
+			case GREEDY:
+				while (open.size() > 0) {
+					GPSNode currentNode = open.remove();
+					if (problem.isGoal(currentNode.getState())) {
+						finished = true;
+						solutionNode = currentNode;
+						return;
+					} else {
+						explode(currentNode);
+					}
 				}
-			}
-			failed = true;
-			finished = true;	
-			break;
-		case IDDFS:
-			
-			break;
+				failed = true;
+				finished = true;
+				break;
+			case IDDFS:
+				int i = 1;
+				boolean flag = true;
+				GPSNode currentNode;
+
+				while (open.size() > 0) {
+
+					while ( open.size() > 0) {
+						currentNode = open.remove();
+
+						if (problem.isGoal(currentNode.getState())) {
+							finished = true;
+							solutionNode = currentNode;
+							return;
+						} else {
+							if(currentNode.getCost() <= i) {
+								explode(currentNode);
+							}
+						}
+
+					}
+					bestCosts.clear();
+					i++;
+					open.add(rootNode);
+
+				}
+				break;
+
 		}
-		
 	}
 
 	private void explode(GPSNode node) {
 		Collection<GPSNode> newCandidates;
 		switch (strategy) {
-		case BFS: //Esta deberia estar
-			if (bestCosts.containsKey(node.getState())) {
-				return;
-			}
-			newCandidates = new ArrayList<>();
-			addCandidates(node, newCandidates);
-			open.addAll(newCandidates);
-			break;
-		case DFS: //Esta deberia estar
-			if (bestCosts.containsKey(node.getState())) {
-				return;
-			}
-			newCandidates = new ArrayList<>();
-			addCandidates(node, newCandidates);
-            ((LinkedList<GPSNode>)open).addAll(0,newCandidates);
-			break;
-		case IDDFS:
-			if (bestCosts.containsKey(node.getState())) {
-				return;
-			}
-			newCandidates = new ArrayList<>();
-			addCandidates(node, newCandidates);
-			// TODO: ¿Cómo se agregan los nodos a open en IDDFS?
-			break;
-		case GREEDY:
-			if (bestCosts.containsKey(node.getState())) {
-				return;
-			}
-			newCandidates = new PriorityQueue<>(new GreedyComparator(problem));
-			addCandidates(node, newCandidates);
-			((LinkedList<GPSNode>)open).addAll(0,newCandidates);
-			break;
-		case ASTAR: //Esta creo que es asi
-			if (!isBest(node.getState(), node.getCost())) {
-				return;
-			}
-			newCandidates = new ArrayList<>();
-			addCandidates(node, newCandidates);
-            open.addAll(newCandidates);
-			break;
+			case BFS: //Esta deberia estar
+				if (bestCosts.containsKey(node.getState())) {
+					return;
+				}
+				newCandidates = new ArrayList<>();
+				addCandidates(node, newCandidates);
+				open.addAll(newCandidates);
+				break;
+			case DFS: //Esta deberia estar
+				if (bestCosts.containsKey(node.getState())) {
+					return;
+				}
+				newCandidates = new ArrayList<>();
+				addCandidates(node, newCandidates);
+				((LinkedList<GPSNode>)open).addAll(0,newCandidates);
+				break;
+			case IDDFS:
+				if (bestCosts.containsKey(node.getState())) {
+					return;
+				}
+				newCandidates = new ArrayList<>();
+				addCandidates(node, newCandidates);
+				((LinkedList<GPSNode>)open).addAll(0,newCandidates);
+				// TODO: ¿Cómo se agregan los nodos a open en IDDFS?
+				break;
+			case GREEDY:
+				if (bestCosts.containsKey(node.getState())) {
+					return;
+				}
+				newCandidates = new PriorityQueue<>(new GreedyComparator(problem));
+				addCandidates(node, newCandidates);
+				((LinkedList<GPSNode>)open).addAll(0,newCandidates);
+				break;
+			case ASTAR: //Esta creo que es asi
+				if (!isBest(node.getState(), node.getCost())) {
+					return;
+				}
+				newCandidates = new ArrayList<>();
+				addCandidates(node, newCandidates);
+				open.addAll(newCandidates);
+				break;
 		}
 	}
 

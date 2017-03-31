@@ -1,15 +1,13 @@
 package sokoban;
 
-import java.io.FileNotFoundException;
-
 import gps.GPSEngine;
-import gps.GPSNode;
 import gps.SearchStrategy;
 import gps.api.GPSProblem;
 import gps.api.GPSState;
-
 import sokoban.IO.GameReader;
 import sokoban.IO.GraphicManager;
+
+import java.io.FileNotFoundException;
 
 /**
  * Created by lucas on 26/03/17.
@@ -20,7 +18,7 @@ public class Main {
         long time = System.currentTimeMillis();
         boolean visual = false;
         try {		
-        			SearchStrategy ss = SearchStrategy.BFS;
+        			SearchStrategy ss = SearchStrategy.IDDFS;
         			System.out.println("Starting...");
         			GPSState s = null;
         			if(args.length == 0){
