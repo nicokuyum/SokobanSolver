@@ -63,11 +63,12 @@ public class GPSEngine {
 				break;
 			case IDDFS:
 				int i = 1;
-				boolean flag = true;
 				GPSNode currentNode;
-
-				while (open.size() > 0) {
-
+				int lastExploded = -1;
+				int exploded = 0;
+				while (lastExploded != exploded) {
+					lastExploded = exploded;
+					exploded = 0;
 					while ( open.size() > 0) {
 						currentNode = open.remove();
 
@@ -77,7 +78,7 @@ public class GPSEngine {
 							return;
 						} else {
 							if(currentNode.getCost() <= i) {
-								explode(currentNode);
+								exploded +=explode(currentNode);
 							}
 						}
 
@@ -87,17 +88,19 @@ public class GPSEngine {
 					open.add(rootNode);
 
 				}
+				failed = true;
+				finished = true;
 				break;
 
 		}
 	}
 
-	private void explode(GPSNode node) {
+	private int explode(GPSNode node) {
 		Collection<GPSNode> newCandidates;
 		switch (strategy) {
 			case BFS: //Esta deberia estar
 				if (bestCosts.containsKey(node.getState())) {
-					return;
+					return 0;
 				}
 				newCandidates = new ArrayList<>();
 				addCandidates(node, newCandidates);
@@ -105,7 +108,7 @@ public class GPSEngine {
 				break;
 			case DFS: //Esta deberia estar
 				if (bestCosts.containsKey(node.getState())) {
-					return;
+					return 0;
 				}
 				newCandidates = new ArrayList<>();
 				addCandidates(node, newCandidates);
@@ -113,7 +116,7 @@ public class GPSEngine {
 				break;
 			case IDDFS:
 				if (bestCosts.containsKey(node.getState())) {
-					return;
+					return 0;
 				}
 				newCandidates = new ArrayList<>();
 				addCandidates(node, newCandidates);
@@ -122,7 +125,7 @@ public class GPSEngine {
 				break;
 			case GREEDY:
 				if (bestCosts.containsKey(node.getState())) {
-					return;
+					return 0;
 				}
 				newCandidates = new PriorityQueue<>(new GreedyComparator(problem));
 				addCandidates(node, newCandidates);
@@ -130,13 +133,14 @@ public class GPSEngine {
 				break;
 			case ASTAR: //Esta creo que es asi
 				if (!isBest(node.getState(), node.getCost())) {
-					return;
+					return 0;
 				}
 				newCandidates = new ArrayList<>();
 				addCandidates(node, newCandidates);
 				open.addAll(newCandidates);
 				break;
 		}
+		return 1;
 	}
 
 	private void addCandidates(GPSNode node, Collection<GPSNode> candidates) {

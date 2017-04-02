@@ -61,11 +61,11 @@ public class Main {
 	                if(!engine.isFailed()){
 	                    System.out.print(ss.toString() +" " + engine.getSolutionNode().getCost());
 	                }else{
-	                    System.out.printf("NO TERMINO");
+	                    System.out.print("NO TERMINO");
 	                }
 	                System.out.print(" " + (System.currentTimeMillis() - time) + "\n");              
 	                if(visual)
-	                	GraphicManager.startAnimation(engine.getSolutionNode());
+	                	GraphicManager.startAnimation(engine);
 	                
         }catch (FileNotFoundException e){
             System.err.println("No such file");

@@ -51,8 +51,11 @@ public class SokobanState implements GPSState{
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.deepHashCode(board);
+		int result = (int)(Math.pow(2,playerPos.x)* Math.pow(3,playerPos.y));
+		for(Point p : boxes){
+			result+= p.x*31 + p.y;
+		}
+		//result = prime * result + Arrays.deepHashCode(board);
 		return result;
 	}
 
@@ -67,7 +70,7 @@ public class SokobanState implements GPSState{
 		SokobanState other = (SokobanState) obj;
 		if(!playerPos.equals(other.playerPos))
 			return false;
-		if (!Arrays.deepEquals(board, other.board))
+		if(!boxes.containsAll(other.boxes))
 			return false;
 		return true;
 	}
