@@ -14,7 +14,7 @@ import sokoban.rules.SokobanRuleUp;
 
 public class SokobanProblem implements GPSProblem {
 
-	public static int heuristic = 2;
+	public static int heuristic = 4;
 
 	List<GPSRule> rules = new ArrayList<>();
 	GPSState st;
@@ -125,15 +125,15 @@ public class SokobanProblem implements GPSProblem {
 				
 				for (Point g : s.goals) {
 					int dist = Math.abs((g.x - b.x)) + Math.abs((g.y - b.y));
-					if (dist < shortest && ((s.getBoard()[g.x][g.y] & TILE.BOX.getValue()) != 0)) {
+					if (dist < shortest && ((s.getBoard()[g.x][g.y] & TILE.BOX.getValue()) == 0)) {
 						shortest = dist;
 					}
 				}
 				totalBoxToTargetDistance += shortest;
 
 			}
-			s.setHValue(totalBoxToTargetDistance+ totalPlayerToBoxDistance);
-			return totalBoxToTargetDistance + totalPlayerToBoxDistance;
+			s.setHValue(totalBoxToTargetDistance + totalPlayerToBoxDistance  - s.completedBoxes*10);
+			return totalBoxToTargetDistance + totalPlayerToBoxDistance - - s.completedBoxes*10;
 		} else {
 			return s.getHValue();
 		}
@@ -144,12 +144,12 @@ public class SokobanProblem implements GPSProblem {
 			int totalPlayerToBoxDistance = Integer.MAX_VALUE;
 			for (Point b : s.boxes) {
 				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
-				if (aux < totalPlayerToBoxDistance) {
+				if (aux < totalPlayerToBoxDistance && ((s.getBoard()[b.x][b.y] & TILE.TARGET.getValue()) == 0)) {
 					totalPlayerToBoxDistance = aux;
 				}
 			}
-			s.setHValue(totalPlayerToBoxDistance);
-			return totalPlayerToBoxDistance;
+			s.setHValue(totalPlayerToBoxDistance  - s.completedBoxes*10);
+			return totalPlayerToBoxDistance  - s.completedBoxes*10;
 		} else {
 			return s.getHValue();
 		}

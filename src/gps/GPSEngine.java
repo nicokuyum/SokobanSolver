@@ -84,7 +84,7 @@ public class GPSEngine {
 
 					}
 					bestCosts.clear();
-					i++;
+					i+=2;
 					open.add(rootNode);
 
 				}
