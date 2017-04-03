@@ -18,7 +18,7 @@ public class Main {
         long time = System.currentTimeMillis();
         boolean visual = false;
         try {		
-        			SearchStrategy ss = SearchStrategy.IDDFS;
+        			SearchStrategy ss = SearchStrategy.BFS;
         			System.out.println("Starting...");
         			GPSState s = null;
         			if(args.length == 0){

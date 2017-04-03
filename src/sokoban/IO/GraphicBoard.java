@@ -21,6 +21,7 @@ public class GraphicBoard extends JFrame{
 	private ImageIcon empty;
 	private ImageIcon box;
 	private ImageIcon boxOnTarget;
+	private ImageIcon dead;
 	private static int w = 10;
 	private static int h = 10;
 	private static GraphicBoard instance;
@@ -34,6 +35,7 @@ public class GraphicBoard extends JFrame{
 			boxOnTarget = new ImageIcon("img/box.png");
 			wall = new ImageIcon("img/WALL.png");
 			target = new ImageIcon("img/target.png");
+			dead = new ImageIcon("img/deadlock.png");
 			setLayout(new GridLayout(h,w,0,0));
 			for(int j=0; j<h;j++){
 				for(int i = 0; i<w;i++){
@@ -98,7 +100,10 @@ public class GraphicBoard extends JFrame{
 				case 12:
 				case 24:
 					labels[j][i].setIcon(player);
-				break;
+					break;
+				case 16:
+					labels[j][i].setIcon(dead);
+					break;
 				default:
 					labels[j][i].setIcon(empty);
 				

@@ -76,9 +76,9 @@ public class DeadLockFinder {
 				int v = matrix[i][j];
 				if(v == WALL || v == GOAL || v == SAFEZONE)
 					res[i][j] = original[i][j];
-				else if(v == FREE)
+				else if(v == FREE){
 					res[i][j] = (byte)(original[i][j]+DEADLOCK);
-				else
+				} else
 					return null;
 			}
 		}
