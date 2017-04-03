@@ -1,7 +1,6 @@
 package gps;
 
 import gps.api.GPSProblem;
-import sokoban.SokobanProblem;
 
 import java.util.Comparator;
 

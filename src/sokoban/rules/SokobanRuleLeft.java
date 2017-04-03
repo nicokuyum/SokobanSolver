@@ -6,7 +6,6 @@ import gps.api.GPSRule;
 import gps.api.GPSState;
 import sokoban.MOVE;
 import sokoban.SokobanState;
-import sokoban.TILE;
 
 public class SokobanRuleLeft extends Moveable implements GPSRule {
 

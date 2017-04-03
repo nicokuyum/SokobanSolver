@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 
 import gps.GPSEngine;
 import gps.GPSNode;
-import gps.api.GPSProblem;
 import sokoban.SokobanState;
 
 public class GraphicManager {
