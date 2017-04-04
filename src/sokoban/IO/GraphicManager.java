@@ -27,9 +27,8 @@ public class GraphicManager {
 			for (int j = solve.size() - 1; j >= 0; j--) {
 				GraphicBoard.getInstance().setBoard(solve.get(j));
 				try {
-					Thread.sleep(100);
+					Thread.sleep(200);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

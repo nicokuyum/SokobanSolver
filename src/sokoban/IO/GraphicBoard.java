@@ -13,7 +13,6 @@ import sokoban.SokobanState;
 public class GraphicBoard extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
-	//private ImageIcon[] images = new ImageIcon[24];
 	private static JLabel[][] labels;
 	private ImageIcon player;
 	private ImageIcon wall;
@@ -40,16 +39,10 @@ public class GraphicBoard extends JFrame{
 			for(int j=0; j<h;j++){
 				for(int i = 0; i<w;i++){
 				labels[j][i] = new JLabel();
-				//labels[i + j*w].setSize(32,32);
-				//labels[i + j*w].setMaximumSize(new Dimension(32,32));
-				//labels[i + j*w].setLocation(i*32,j*32);
-				//labels[i + j*w].setBounds(i*32, j*32, 32, 32);
-				//labels[i*15 + j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				add(labels[j][i]);
 			}
 		}
 		setSize(w*32 +5,(h+1)*32);
-		//setResizable(false);
 		setVisible(true);
 		
 	}
@@ -108,15 +101,8 @@ public class GraphicBoard extends JFrame{
 					labels[j][i].setIcon(empty);
 				
 				}
-		//		labels[i + j*w].setLocation(i*32,j*32);
 			}
 		}
-	/*try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//repaint();*/
 	}
 	@Override
 	public void paintComponents(Graphics g) {
