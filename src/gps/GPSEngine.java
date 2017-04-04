@@ -40,7 +40,7 @@ public class GPSEngine {
 	}
 
 	public void findSolution() {
-		GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null);
+		GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null,0);
 		open.add(rootNode);
 		// TODO: ¿Lógica de IDDFS?
 		switch (strategy) {
@@ -64,24 +64,23 @@ public class GPSEngine {
 			case IDDFS:
 				int i = 1;
 				GPSNode currentNode;
-				int lastExploded = -1;
-				int exploded = 0;
-				while (lastExploded != exploded) {
-					lastExploded = exploded;
-					exploded = 0;
+				boolean valid = true;
+				while (valid) {
+					valid = false;
 					while ( open.size() > 0) {
 						currentNode = open.remove();
-
 						if (problem.isGoal(currentNode.getState())) {
 							finished = true;
 							solutionNode = currentNode;
 							return;
 						} else {
-							if(currentNode.getCost() <= i) {
-								exploded +=explode(currentNode);
+							if(currentNode.getDepth() <= i) {
+								explode(currentNode);
+								if(currentNode.getDepth() == i){
+									valid = true;
+								}
 							}
 						}
-
 					}
 					bestCosts.clear();
 					i+=2;

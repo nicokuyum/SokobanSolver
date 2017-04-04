@@ -14,7 +14,7 @@ import sokoban.rules.SokobanRuleUp;
 
 public class SokobanProblem implements GPSProblem {
 
-	public static int heuristic = 4;
+	public static int heuristic = 2;
 
 	List<GPSRule> rules = new ArrayList<>();
 	GPSState st;
