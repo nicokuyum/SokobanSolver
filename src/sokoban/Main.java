@@ -20,7 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
         long time = System.currentTimeMillis();
-        boolean visual = false;
+        boolean visual;
         try {		
         			SearchStrategy ss = SearchStrategy.BFS;
         			System.out.println("Starting...");
@@ -65,8 +65,8 @@ public class Main {
 	                GPSEngine engine = new GPSEngine(problem,ss);
 	                engine.findSolution();
 	                if(!engine.isFailed()){
-						System.out.println("Solucion Encotrada");
-						System.out.println("Metodo de busqueda: "+ ss.toString());
+						System.out.println("Solución Encontrada");
+						System.out.println("Metodo de búsqueda: "+ ss.toString());
 						System.out.print("Tiempo: " + (System.currentTimeMillis() - time) + "\n");
 						System.out.println("Costo de la solucion: " + engine.getSolutionNode().getCost());
 						System.out.println("Profundidad: " + engine.getSolutionNode().getCost());

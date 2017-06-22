@@ -50,6 +50,8 @@ public class SokobanProblem implements GPSProblem {
 
 	@Override
 	public Integer getHValue(GPSState state) {
+		if(isDeadlock((SokobanState)state))
+			return Integer.MAX_VALUE;
 		switch (heuristic) {
 		case 1:
 			return getHValue1(state);
@@ -64,6 +66,7 @@ public class SokobanProblem implements GPSProblem {
 		}
 	}
 
+	// Suma de distancias de cada caja a goal más cercano
 	private Integer getHValue1(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		int totalDistance = 0;
@@ -138,6 +141,8 @@ public class SokobanProblem implements GPSProblem {
 			return s.getHValue();
 		}
 	}
+
+
 	public Integer getHValue4(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		if (s.getHValue() == -1) {
@@ -153,5 +158,13 @@ public class SokobanProblem implements GPSProblem {
 		} else {
 			return s.getHValue();
 		}
+	}
+	public boolean isDeadlock(SokobanState s){
+		for(Point p: s.getBoxes()){
+			int target = s.getBoard()[(int)p.getX()][(int)p.getY()];
+			if((target & TILE.DEADLOCK.getValue()) != 0)
+				return true;
+		}
+		return false;
 	}
 }

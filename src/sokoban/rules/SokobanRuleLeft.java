@@ -27,9 +27,9 @@ public class SokobanRuleLeft extends Moveable implements GPSRule {
 			return Optional.empty();
 		}
 		if(nextToBox(MOVE.LEFT,s)){
-			if(moveToDeadlock(MOVE.LEFT, s)){
-				return Optional.empty();
-			}
+//			if(moveToDeadlock(MOVE.LEFT, s)){
+//				return Optional.empty();
+//			}
 			next = movePlayerWithBox(MOVE.LEFT,s);
 		}else{
 			next = movePlayer(MOVE.LEFT,s);
