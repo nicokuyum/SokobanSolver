@@ -21,8 +21,8 @@ public class GameReader {
 			
 			int completedBoxes = 0;
 			
-			List<Point> boxes = new ArrayList<Point>();
-			List<Point> goals = new ArrayList<Point>();
+			List<Point> boxes = new ArrayList<>();
+			List<Point> goals = new ArrayList<>();
 			Point playerPos = null;
 			
 			byte[][] matrix = new byte[rows][cols];
@@ -46,10 +46,7 @@ public class GameReader {
 					}
 				}
 			}
-			SokobanState s = new SokobanState(matrix, playerPos, boxes,goals, cols, rows, completedBoxes);
-			
-			return s;
-			
+			return new SokobanState(matrix, playerPos, boxes,goals, cols, rows, completedBoxes);
 	}
 	
 	public static void printState(SokobanState s){

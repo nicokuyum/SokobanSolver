@@ -51,16 +51,16 @@ public class SokobanProblem implements GPSProblem {
 	@Override
 	public Integer getHValue(GPSState state) {
 		switch (heuristic) {
-		case 1:
-			return getHValue1(state);
-		case 2:
-			return getHValue2(state);
-		case 3:
-			return getHValue3(state);
-		case 4:
-			return getHValue4(state);
-		default:
-			return getHValue2(state);
+			case 1:
+				return getHValue1(state);
+			case 2:
+				return getHValue2(state);
+			case 3:
+				return getHValue3(state);
+			case 4:
+				return getHValue4(state);
+			default:
+				return getHValue2(state);
 		}
 	}
 
@@ -82,17 +82,17 @@ public class SokobanProblem implements GPSProblem {
 	public Integer getHValue2(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		if (s.getHValue() == -1) {
-			int totalPlayerToBoxDistance = Integer.MAX_VALUE;
+			int playerToClosestBoxDistance = Integer.MAX_VALUE;
 			int totalBoxToTargetDistance = 0;
 			for (Point b : s.boxes) {
-				
-				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
-				if (aux < totalPlayerToBoxDistance) {
-					totalPlayerToBoxDistance = aux;
+
+				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y)) - 1;
+				if (aux < playerToClosestBoxDistance) {
+					playerToClosestBoxDistance = aux;
 				}
-				
+
 				int shortest = Integer.MAX_VALUE;
-				
+
 				for (Point g : s.goals) {
 					int dist = Math.abs((g.x - b.x)) + Math.abs((g.y - b.y));
 					if (dist < shortest) {
@@ -102,27 +102,27 @@ public class SokobanProblem implements GPSProblem {
 				totalBoxToTargetDistance += shortest;
 
 			}
-			s.setHValue(totalBoxToTargetDistance+ totalPlayerToBoxDistance);
-			return totalBoxToTargetDistance + totalPlayerToBoxDistance;
+			s.setHValue(totalBoxToTargetDistance + playerToClosestBoxDistance);
+			return totalBoxToTargetDistance + playerToClosestBoxDistance;
 		} else {
 			return s.getHValue();
 		}
 	}
-	
+
 	public Integer getHValue3(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		if (s.getHValue() == -1) {
 			int totalPlayerToBoxDistance = Integer.MAX_VALUE;
 			int totalBoxToTargetDistance = 0;
 			for (Point b : s.boxes) {
-				
-				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
+
+				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y)) - 1;
 				if (aux < totalPlayerToBoxDistance) {
 					totalPlayerToBoxDistance = aux;
 				}
-				
+
 				int shortest = Integer.MAX_VALUE;
-				
+
 				for (Point g : s.goals) {
 					int dist = Math.abs((g.x - b.x)) + Math.abs((g.y - b.y));
 					if (dist < shortest && ((s.getBoard()[g.x][g.y] & TILE.BOX.getValue()) == 0)) {
@@ -132,24 +132,25 @@ public class SokobanProblem implements GPSProblem {
 				totalBoxToTargetDistance += shortest;
 
 			}
-			s.setHValue(totalBoxToTargetDistance + totalPlayerToBoxDistance  - s.completedBoxes*10);
-			return totalBoxToTargetDistance + totalPlayerToBoxDistance - - s.completedBoxes*10;
+			s.setHValue(totalBoxToTargetDistance + totalPlayerToBoxDistance - s.completedBoxes * 10);
+			return totalBoxToTargetDistance + totalPlayerToBoxDistance - -s.completedBoxes * 10;
 		} else {
 			return s.getHValue();
 		}
 	}
+
 	public Integer getHValue4(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		if (s.getHValue() == -1) {
 			int totalPlayerToBoxDistance = Integer.MAX_VALUE;
 			for (Point b : s.boxes) {
-				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y))-1;
+				int aux = Math.abs((s.playerPos.x - b.x)) + Math.abs((s.playerPos.y - b.y)) - 1;
 				if (aux < totalPlayerToBoxDistance && ((s.getBoard()[b.x][b.y] & TILE.TARGET.getValue()) == 0)) {
 					totalPlayerToBoxDistance = aux;
 				}
 			}
-			s.setHValue(totalPlayerToBoxDistance  - s.completedBoxes*10);
-			return totalPlayerToBoxDistance  - s.completedBoxes*10;
+			s.setHValue(totalPlayerToBoxDistance - s.completedBoxes * 10);
+			return totalPlayerToBoxDistance - s.completedBoxes * 10;
 		} else {
 			return s.getHValue();
 		}

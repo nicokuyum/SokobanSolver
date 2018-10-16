@@ -16,7 +16,7 @@ public class SokobanRuleLeft extends Moveable implements GPSRule {
 
 	@Override
 	public String getName() {
-		return "Left";
+		return "Move Player Left";
 	}
 
 	@Override

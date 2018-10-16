@@ -3,6 +3,8 @@ package gps;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
+import sokoban.IO.GraphicBoard;
+import sokoban.SokobanState;
 
 import java.util.*;
 
@@ -20,12 +22,12 @@ public class GPSEngine {
 	protected SearchStrategy strategy;
 
 	public GPSEngine(GPSProblem myProblem, SearchStrategy myStrategy) {
-		switch(myStrategy){
+		switch (myStrategy) {
 			case BFS:
 			case DFS:
 			case IDDFS:
 			case GREEDY:
-				open = new LinkedList<>(); 
+				open = new LinkedList<>();
 				break;
 			case ASTAR:
 				open = new PriorityQueue<>(new AStarComparator(myProblem));
@@ -40,9 +42,8 @@ public class GPSEngine {
 	}
 
 	public void findSolution() {
-		GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null,0);
+		GPSNode rootNode = new GPSNode(problem.getInitState(), 0, null);
 		open.add(rootNode);
-		// TODO: ¿Lógica de IDDFS?
 		switch (strategy) {
 			case DFS:
 			case BFS:
@@ -64,26 +65,27 @@ public class GPSEngine {
 			case IDDFS:
 				int i = 1;
 				GPSNode currentNode;
-				boolean valid = true;
-				while (valid) {
-					valid = false;
-					while ( open.size() > 0) {
+				int lastExploded = -1;
+				int exploded = 0;
+				while (lastExploded != exploded) {
+					lastExploded = exploded;
+					exploded = 0;
+					while (open.size() > 0) {
 						currentNode = open.remove();
+
 						if (problem.isGoal(currentNode.getState())) {
 							finished = true;
 							solutionNode = currentNode;
 							return;
 						} else {
-							if(currentNode.getDepth() <= i) {
-								explode(currentNode);
-								if(currentNode.getDepth() == i){
-									valid = true;
-								}
+							if (currentNode.getCost() <= i) {
+								exploded += explode(currentNode);
 							}
 						}
+
 					}
 					bestCosts.clear();
-					i+=2;
+					i += 2;
 					open.add(rootNode);
 
 				}
@@ -97,7 +99,7 @@ public class GPSEngine {
 	private int explode(GPSNode node) {
 		Collection<GPSNode> newCandidates;
 		switch (strategy) {
-			case BFS: //Esta deberia estar
+			case BFS:
 				if (bestCosts.containsKey(node.getState())) {
 					return 0;
 				}
@@ -105,13 +107,13 @@ public class GPSEngine {
 				addCandidates(node, newCandidates);
 				open.addAll(newCandidates);
 				break;
-			case DFS: //Esta deberia estar
+			case DFS:
 				if (bestCosts.containsKey(node.getState())) {
 					return 0;
 				}
 				newCandidates = new ArrayList<>();
 				addCandidates(node, newCandidates);
-				((LinkedList<GPSNode>)open).addAll(0,newCandidates);
+				((LinkedList<GPSNode>) open).addAll(0, newCandidates);
 				break;
 			case IDDFS:
 				if (bestCosts.containsKey(node.getState())) {
@@ -119,8 +121,7 @@ public class GPSEngine {
 				}
 				newCandidates = new ArrayList<>();
 				addCandidates(node, newCandidates);
-				((LinkedList<GPSNode>)open).addAll(0,newCandidates);
-				// TODO: ¿Cómo se agregan los nodos a open en IDDFS?
+				((LinkedList<GPSNode>) open).addAll(0, newCandidates);
 				break;
 			case GREEDY:
 				if (bestCosts.containsKey(node.getState())) {
@@ -128,9 +129,9 @@ public class GPSEngine {
 				}
 				newCandidates = new PriorityQueue<>(new GreedyComparator(problem));
 				addCandidates(node, newCandidates);
-				((LinkedList<GPSNode>)open).addAll(0,newCandidates);
+				((LinkedList<GPSNode>) open).addAll(0, newCandidates);
 				break;
-			case ASTAR: //Esta creo que es asi
+			case ASTAR:
 				if (!isBest(node.getState(), node.getCost())) {
 					return 0;
 				}
@@ -148,7 +149,7 @@ public class GPSEngine {
 		for (GPSRule rule : problem.getRules()) {
 			Optional<GPSState> newState = rule.evalRule(node.getState());
 			if (newState.isPresent()) {
-				GPSNode newNode = new GPSNode(newState.get(), node.getCost() + rule.getCost(),rule);
+				GPSNode newNode = new GPSNode(newState.get(), node.getCost() + rule.getCost(), rule);
 				newNode.setParent(node);
 				candidates.add(newNode);
 			}
@@ -190,7 +191,6 @@ public class GPSEngine {
 	}
 
 	public GPSNode getSolutionNode() {
-		//System.out.println(explosionCounter);
 		return solutionNode;
 	}
 

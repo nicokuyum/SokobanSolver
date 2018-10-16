@@ -32,7 +32,7 @@ public class DeadLockFinder {
 		fil = original.length;
 		col = original[0].length;
 		this.matrix = new byte[fil][col];
-		goals = new LinkedList<Point>();
+		goals = new LinkedList<>();
 		copyOnlyObjectivesAndWalls(original,matrix,fil,col);
 	}
 	
@@ -76,9 +76,9 @@ public class DeadLockFinder {
 				int v = matrix[i][j];
 				if(v == WALL || v == GOAL || v == SAFEZONE)
 					res[i][j] = original[i][j];
-				else if(v == FREE){
+				else if(v == FREE)
 					res[i][j] = (byte)(original[i][j]+DEADLOCK);
-				} else
+				else
 					return null;
 			}
 		}
