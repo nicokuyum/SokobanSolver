@@ -7,7 +7,7 @@ import gps.api.GPSState;
 import sokoban.MOVE;
 import sokoban.SokobanState;
 
-public class SokobanRuleRight extends Moveable implements GPSRule{
+public class SokobanRuleRight extends Moveable implements GPSRule {
 
 	@Override
 	public Integer getCost() {
@@ -23,16 +23,16 @@ public class SokobanRuleRight extends Moveable implements GPSRule{
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		GPSState next;
-		if(!canMove(MOVE.RIGHT,s)){
+		if (!canMove(MOVE.RIGHT, s)) {
 			return Optional.empty();
 		}
-		if(nextToBox(MOVE.RIGHT,s)){
-			if(moveToDeadlock(MOVE.RIGHT, s)){
+		if (nextToBox(MOVE.RIGHT, s)) {
+			if (moveToDeadlock(MOVE.RIGHT, s)) {
 				return Optional.empty();
 			}
-			next = movePlayerWithBox(MOVE.RIGHT,s);
-		}else{
-			next = movePlayer(MOVE.RIGHT,s);
+			next = movePlayerWithBox(MOVE.RIGHT, s);
+		} else {
+			next = movePlayer(MOVE.RIGHT, s);
 		}
 		return Optional.of(next);
 	}

@@ -23,19 +23,19 @@ public class SokobanRuleLeft extends Moveable implements GPSRule {
 	public Optional<GPSState> evalRule(GPSState state) {
 		SokobanState s = (SokobanState) state;
 		GPSState next;
-		if(!canMove(MOVE.LEFT,s)){
+		if (!canMove(MOVE.LEFT, s)) {
 			return Optional.empty();
 		}
-		if(nextToBox(MOVE.LEFT,s)){
-			if(moveToDeadlock(MOVE.LEFT, s)){
+		if (nextToBox(MOVE.LEFT, s)) {
+			if (moveToDeadlock(MOVE.LEFT, s)) {
 				return Optional.empty();
 			}
-			next = movePlayerWithBox(MOVE.LEFT,s);
-		}else{
-			next = movePlayer(MOVE.LEFT,s);
+			next = movePlayerWithBox(MOVE.LEFT, s);
+		} else {
+			next = movePlayer(MOVE.LEFT, s);
 		}
 		return Optional.of(next);
 	}
-	
-	
+
+
 }

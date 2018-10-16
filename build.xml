@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project name="SokobanSolver" basedir="." default="jar">
-    <property name="source.dir"     value="src"/>
-    <property name="lib.dir"        value="lib"/>
-    <property name="class.dir"      value="bin"/>
-    <property name="img.dir"      value="img"/>
-    <property name="jar.dir"        value="."/>
-    <property name="jar.file"        value="${ant.project.name}.jar"/>
-    <property name="main-class"     value="sokoban.Main"/>
+    <property name="source.dir" value="src"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="class.dir" value="bin"/>
+    <property name="img.dir" value="img"/>
+    <property name="jar.dir" value="."/>
+    <property name="jar.file" value="${ant.project.name}.jar"/>
+    <property name="main-class" value="sokoban.Main"/>
 
-    <path id="libraries.path">    
+    <path id="libraries.path">
         <fileset dir="${lib.dir}">
             <include name="*.jar"/>
         </fileset>
@@ -21,21 +21,21 @@
     <target name="compile" description="build class files" depends="clean">
         <mkdir dir="${class.dir}"/>
         <javac srcdir="${source.dir}" destdir="${class.dir}">
-            
+
         </javac>
     </target>
 
     <target name="jar" depends="compile">
-      <mkdir dir="${class.dir}/${img.dir}" />
-      <copy todir="${class.dir}/${img.dir}">
-        <fileset dir="${img.dir}"/>
-      </copy>
+        <mkdir dir="${class.dir}/${img.dir}"/>
+        <copy todir="${class.dir}/${img.dir}">
+            <fileset dir="${img.dir}"/>
+        </copy>
         <jar destfile="${jar.file}" basedir="${class.dir}">
             <manifest>
                 <attribute name="Main-Class" value="${main-class}"/>
                 <attribute name="Class-Path" value="${manifest.classpath}"/>
             </manifest>
-        </jar>  
+        </jar>
     </target>
 
     <target name="run" depends="jar">
